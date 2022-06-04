@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-export $(cat .env) # local only
+export $(cat .env) 
 pip install pytest-cov
-python -m spacy download en
-pytest --cov=src   ./tests/unit/functional_tests.py  --cov-report=xml  
+pytest --cov=src   ./tests/unit/tests.py  --cov-report=xml  
 coverage xml -i
 

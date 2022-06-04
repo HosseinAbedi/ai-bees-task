@@ -13,7 +13,7 @@ basePath: /v1
 paths:
   /getComment:
     get:
-      operationId: src.methods.generate_comments_endpoint
+      operationId: src.methods.generate_comment_endpoint
       tags:
         - Comment Generation
       summary: Generate text from a social media post and extract it's topic and entities in the post. 

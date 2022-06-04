@@ -1,7 +1,11 @@
+import os
+import numpy as np
+import datefinder
 from transformers import pipeline
 from transformers import AutoTokenizer, AutoModelForTokenClassification
-import datefinder
+from database import insert_one
 
+STARTER_ENTITIES = ['I-ORG', 'I-LOC', 'I-PER', "I-MISC", "O", "B-MISC"]
 ENTITIES = {'B-ORG': 'Company', 'B-LOC': 'Location', 'B-PER': 'Person'} 
 LABELS = ['Sports', 'Technology', 'Medicine', "Politics", "Arts"]
 TOKENIZER = AutoTokenizer.from_pretrained("dslim/bert-base-NER")
@@ -12,32 +16,32 @@ CLASSIFIER = pipeline("zero-shot-classification",
 SUMMARIZER = pipeline("summarization", model="philschmid/distilbart-cnn-12-6-samsum")
 
 def get_comment(text):
-    return SUMMARIZER(text, max_length=min([11, len(text.split())]))['summary_text']
+    return SUMMARIZER(text)
 
 def categorize_text(text):
     res =  CLASSIFIER(text, LABELS, multi_label=True)
-    return dict(zip(res['labels'], res['scores']))
+    return res['labels'][np.argmax(res['scores'])] #dict(zip(res['labels'], map(lambda x: str(round(x, 3)*100) + '%', res['scores'])))
 
 def get_named_entities(text):
     res = NLP(text)
     temp = []
     for elem in res:
-        temp.append({ENTITIES[elem['entity']]: elem['word']})
+        if elem['entity'] not in STARTER_ENTITIES:
+            temp.append({ENTITIES[elem['entity']]: elem['word']})
     dates = datefinder.find_dates(text)
     for date in dates:
         temp.append({"Date": str(date.date())})
     return temp
 
-def generate_comments(post):
+def generate_comment(post):
     named_entities = get_named_entities(post)
-    categories = categorize_text(post)
+    category = categorize_text(post)
     comment = get_comment(post)
-    return {"categories": categories,
-            "named_entities": named_entities,
-            "comment": comment}
-
-
-if __name__ == "__main__":
-    pass
-    # res = categorize_text(text='Iphone')
-    # print(get_named_entities('My name is Sarah and I live in London and I work at Google I will leave on March 6th 2020'))
+    if comment:
+        comment = comment[0]['summary_text']
+    else:
+        comment = ''
+    result = {"category": category,
+              "named_entities": named_entities,
+              "comment": comment}
+    return result
