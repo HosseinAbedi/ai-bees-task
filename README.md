@@ -27,10 +27,10 @@ Here's the list of the environment variables needed to run the service:
 
 ### Launch
 
-Just build the docker image and run the image. For example
+Just build the docker image and run the it. For example
 ```bash
 docker build -t image:latest .
-docker run $SERVER_PORT:$SERVER_PORT image:latest
+docker run -p $SERVER_PORT:$SERVER_PORT image:latest
 ```
 
 ### Usage
@@ -38,12 +38,41 @@ docker run $SERVER_PORT:$SERVER_PORT image:latest
 After deployment, to see the Swagger UI, go to
 ```bash
 {service_public_address}/v1/ui
+where {service_public_address}
+is of the format `ip:port`
 ```
 
-You can also find the documentation in [postman](https://qpageapi.postman.co/workspace/QPage~0fa24148-4a10-474b-9860-452941cbc985/folder/15375452-f7886196-feab-43d6-a671-6f8655925f2c?ctx=documentation).
-
-### Test
-
+For example I had my service up and running on my personal server, given the following input
+```json
+My name is Sarah and I live in London and I work at Google Left on March 6th 2020. My job there mostly involved in leading a team of sotware developers in two projects about self driving cars.
+I had a very nice time at Google.
+```
+The output would be
+```json
+{
+  "category": "Technology",
+  "comment": "Sarah lives in London and she works at Google. Her job at Google left on March 6th 2020. She was involved in leading a team of sotware developers in two projects about self driving cars. Sarah had a nice time at Google and she had a very nice time there.",
+  "named_entities": [
+    {
+      "Person": "Sarah"
+    },
+    {
+      "Location": "London"
+    },
+    {
+      "Company": "Google"
+    },
+    {
+      "Company": "Google"
+    },
+    {
+      "Date": "2020-03-06"
+    }
+  ]
+```
+![Swagger UI example](https://lh3.googleusercontent.com/_2Xh6Txg1qznAaAD3q_FFrl1PJG6rJS4q-jmEB5f9CjwjfyZxBN5dt0g-EhtLbdzymIu5lbCRL_C01zzPLnnMvfYz7kJp91ZPUxWtMh-vliOaKBfSLSC6n24yz9H1UFpEkwASkFWxlnbL3LrEYrTq-LOeSkVexPejsG3ZPCx0MJ3Q1hybp0JH5pJuHe9E2WEJl5D_OoDSZyjNC0uuKZW4U08D0QT1Dd7lFMsD3QdwZkFGXmzajtjsehxv2GyDUFl5DmJsX99EXQbzNz2y7h2kJmq6fJGOob1doNjjX-Qu3RJSmTbXxgFodQLuYo0FYeH14CjtMriLiToDiJkWJjTWM-iLUvoE0e8_OqE8SLuvgeBHm56Po55QuR0Yl6NCq6DDKXNGPX1uOSraeYUrQHPcGQSu7eEwWcdix2VV_u04NhFOjSwfrJbgPHa7rn5py_5viWJDe9iDZAzW_UgqmAVlZm_XmCtaTHPadbA-ANzQoD9Db2nlhRuCnJfqw9_sYG8vVjag3tAAAifXCbouGJNyAO1JKdxJBlLaNB_wLpuJIz-Z1iFhd7GAUvoKdtk8_XeLR1sHWW2XFreiODqndEUm3vXHg5sEqI6lSXmr7QHtZbOTN45beM3FeKtn8BCuS6Cp6bFdjgy4KyIPELfPYaa7O2kOyy1xqQwOMPY49fBLoupu1QQAiSwhqB9Sr1sDxg3rifSl-3Z9HSXSjxFPnopWIvSSCy54vJWb_hbY46KKMJeydN7TNnLaYxkUvZSPQ=w1027-h607-no?authuser=0)
+![Swagger UI example 2](https://lh3.googleusercontent.com/t9hduPrI8XH8iWBHuDpyzX2UxCGhZgvOw9peUaIoNU-RJjvUuinZADcuIucxPs_-X2_3_SYrgVCdSz9BSdCjim8_iWM7YOaFXzuQSX7hTjH0zbn53f558KX5Vp2k3YwC-2ekW9NqXukP2SQTHtCfh7iD0dJaoHUewQJ56lLQycVX3iRrQ5OvFYwjCfCWelZqN-CM8wiRk1bJiTFQIDjmyYFdIFfHLXr2ksXLPJEmWM_wnQvhPjCyS4ureARbbNtAOhCheXc18VM6jzPke7bnsiFFNb4giLWkkXdA2UPE5U5bEuU4lmh5qUy8_SOVtJ8dpq2gfYQqIAkmlclhcdkM9djcgelolnO0f3lKT1PTt5VrRvU-7P4KKdrAajmgV8ZcJjtywb5s_gx2ByA3EUzopU7i-OJeob_OiwV4F0Ryq6JYfE-8YXrndCW4iUS-UHOzvMAS64IUXPb_IOVHwjJGH6wGU6ltWxKSXDqelVhH_wZ9E5g-vmTadbRKN5OisyatalcJfnX583KbJvA6eKZhg7SqAf9F34cEJnNe1lARcw0Vg_lhslsiRlynmJ7h0-5rLDFMwJKdpxVrw2jYJBKvzECZNV999uOM1pKuFC5cCYXrdinAMQYvZW4ktQATdgI-IdoUveR728toz33KUqXGvE4YwdBnJAET2Qxrz1ZqUMNtIp2RWrl53PGxFByWz5I_qNH8zmi9UPqpY975fp4_lDYicuw4ZgwDvzVG-ZFOd1ct_c38KP6awXhfkJe6nQ=w1051-h627-no?authuser=0)
+### Running Tests
   
 - Dependencies
 
