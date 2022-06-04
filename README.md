@@ -7,6 +7,7 @@
   - [Running Tests](#running-tests)
   - [Dependencies](#dependencies)
   - [Possible Improvements in the Future](#possible-improvements-in-the-future)
+  - [API](#api)
 
 ## Social Media Comment Generator Interface API
 
@@ -118,3 +119,157 @@ In here, I used a [MongoDB Atlas Shared Instance](https://www.mongodb.com/pricin
 	* Apart from replacing the model with a better one, NER models can be improved by integrating gazetteer based models with the current model, especially enhance the quality of the model in the case PERSON and COMPANY entities.
 	* To generate comments, the best practice would be  to use a language models like [GPT-J-6B](https://huggingface.co/EleutherAI/gpt-j-6B?text=My+name+is+Merve+and+my+favorite) (given that we have a very powerful hardware) or [GPT-3](https://openai.com/api/) (given than we have an account). For example, with GPT3 we can create a training data set of topics, named entities and comments. Then we finetune a model based on this data to build a state of the art model for comment generation.
 	* To run the current models efficiently and with low latency we need to either host the models on a hardware with decent GPU or use available services like [NLPCloud](https://nlpcloud.io/) (the paid plans) to have a very good performance in the case of response time.
+
+
+### API 
+---
+title: Social Media Comment Generator Interface API v0.1.0
+language_tabs:
+  - shell: Shell
+  - http: HTTP
+  - javascript: JavaScript
+  - ruby: Ruby
+  - python: Python
+  - php: PHP
+  - java: Java
+  - go: Go
+---
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/getComment?post=string
+
+```
+
+```http
+GET /v1/getComment?post=string HTTP/1.1
+
+```
+
+```javascript
+
+fetch('/v1/getComment?post=string',
+{
+  method: 'GET'
+
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+result = RestClient.get '/v1/getComment',
+  params: {
+  'post' => 'string'
+}
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+
+r = requests.get('/v1/getComment', params={
+  'post': 'string'
+})
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('GET','/v1/getComment', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("/v1/getComment?post=string");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "/v1/getComment", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`GET /getComment`
+
+*Generate text from a social media post and extract it's topic and entities in the post.*
+
+<h3 id="src.methods.generate_comment_endpoint-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|post|query|string|true|none|
+
+<h3 id="src.methods.generate_comment_endpoint-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|ok|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+
