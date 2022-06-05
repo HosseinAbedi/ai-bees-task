@@ -3,7 +3,6 @@ import numpy as np
 import datefinder
 from transformers import pipeline
 from transformers import AutoTokenizer, AutoModelForTokenClassification
-from database import insert_one
 
 STARTER_ENTITIES = ['I-ORG', 'I-LOC', 'I-PER', "I-MISC", "O", "B-MISC"]
 ENTITIES = {'B-ORG': 'Company', 'B-LOC': 'Location', 'B-PER': 'Person'} 
