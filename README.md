@@ -12,13 +12,15 @@
 ## Social Media Comment Generator Interface API
 
 Creating comments for social media posts.
-The service is comprised of different parts:
+The service is comprised of the following different parts:
 
-* In the first part, a user puts in a text (a post) as an input. Then, user's input is fed to a [zero-shot classifier](https://huggingface.co/facebook/bart-large-mnli) to predict the association (relatedness) of the text to a set of predefined class labels (For example, `['Sports', 'Technology', 'Medicine', "Politics", "Arts"]`, we can extend this list easily). We use a multi-label classification problem given the labels and the text and assign most probable class label to the text.
- * In the second part using a [state of the art named entity recognition model](https://huggingface.co/dslim/bert-base-NER) we extract the name Companies, Persons and Locations. Along with this model we use a Python library to parse the text for date values.
+* In the first part, a user puts in a text (a post) as an input. Then, user's input is fed to a [zero-shot classifier](https://huggingface.co/facebook/bart-large-mnli) to predict the association (relatedness) of the text to a set of predefined class labels (For example, `['Sports', 'Technology', 'Medicine', "Politics", "Arts"]`, we can extend this list easily). We approach it as a multi-label classification problem given the labels and the text. The goal here would be to assign the most probable class label to each text.
+ * In the second part using a [state of the art named entity recognition model](https://huggingface.co/dslim/bert-base-NER) we extract the names of Companies, Persons and Locations. Along with this model we use a Python library to parse the text for date values.
  * The third part is about generating comment about the post given the information extracted. To do this properly we can use a language model but since publicly available model need relatively powerful  hardware to host we switch to and alternative method and that is using a  [text summarization model](https://huggingface.co/philschmid/distilbart-cnn-12-6-samsum) to generate the comments.
  After going through these components, result is store in a MongoDB instance. The whole system is served using Flask framework as a Restful API. The architecture of the system is shown in the following picture: 
  ![Arch](https://lh3.googleusercontent.com/tdClz7dna1i7KT4OlRJLR-ZvXWqthk6b73WHGdMKc7Zp66VqCxHJ9IbPdUOCp4NuhqSsOO5vRtVkdwTn45iVxpmsgjs_RBOJXag9QyJt7ZJW3bxr8k7IgtswmxrZjTLfTmWZtle52VMBdGiKxJFHURwcW_5-NWJaOa92ICyeGVnR7AiccCSxUTNAM5U6UD2_EpRtF0mtRKNbS1IDYNGz5npET5g9OG8AijWnbj6FSWbx9kBUhDpVCL03BEBfnPEUvoeb5OKnIdWhM6Xqa2S-vZhB4u--AafAPKKn2bMZvXD6-cNDxEqavxEXZk0bhGp81gZ_jSKuX1lTm1y8lq8JNd_7E6pV1LGb6Gzaw0ErKbgv0_uHbr1OAbf06gsfWYX-ts0h-sPdjUbGzEdCgdqJ6ZZS5JqiedHgEzYk-TMGK59fMzcJyC7EcUt9R7cOW4TS1gvn0Be9e1tYlD1il7ESmjWiZQqRLb0piqaRNF7As-xFFy7gSa8jhkfCR2vqjay00NYeBjSfscKYwYvUgG_fiHyuHCs817XoS4GoTffDjwlXHgeRkeiQRXuU4P6t3aQuOB44bO7WC_I3xmfQr0y7I740awydozED0FD_at4Rr7QPBUchvqjZS6oJpBKWOgC71Je0L-Jtk3vcArWyA4hobrFfUawBaiA2N588DKE5XxwRchY5L0dCZYWhlr3QE7fVjZFziNz6Nb53VK6ybDChwNY_COMIyd0WTKgk698xaB1qOiR3g7GHDUc7wQKjqg=w502-h601-no?authuser=0)
+ **Note**
+The current service implementation (as a demo), uses CPU as the source of computation so the latency of the current service is relatively high.
 
 
 ## Environment Variables
@@ -56,7 +58,7 @@ For example I had my service up and running on my personal server, given the fol
 My name is Sarah and I live in London and I worked at Google Left on March 6th 2020. My job there mostly involved in leading a team of sotware developers in two projects about self driving cars.
 I had a very nice time at Google.
 ```
-The output would be
+the output would be
 ```json
 {
   "category": "Technology",
@@ -87,7 +89,7 @@ The output would be
 - Dependencies
 
 	* Python3.7 virtual environment (for running tests), can be set up with
-	```bas
+	```bash
 	python3.7 -m venv venv
 	source venv/bin/activate
 	pip install -U pip
@@ -105,7 +107,7 @@ It runs the tests and create a report in the `coverage.xml`, this file is used b
 
 ### Dependencies
 
-* a MongoDB instance (on your local machine or in MongoDB cloud). To set up the minimum requirement for this project you can use the docker compose file in `MongoDB-Scripts`. Run the following commands:
+* A MongoDB instance (on your local machine or in MongoDB cloud). To set up the minimum requirement for this project you can use the docker compose file in `MongoDB-Scripts`. Run the following commands:
 ```bash
 pip install docker-compose
 docker-compose up -d
@@ -115,9 +117,10 @@ In here, I used a [MongoDB Atlas Shared Instance](https://www.mongodb.com/pricin
 
 ### Possible Improvements in the Future
 
-* There are a couple of ways to improve the performance of the service
-	* Apart from replacing the model with a better one, NER models can be improved by integrating gazetteer based models with the current model, especially enhance the quality of the model in the case PERSON and COMPANY entities.
-	* To generate comments, the best practice would be  to use a language models like [GPT-J-6B](https://huggingface.co/EleutherAI/gpt-j-6B?text=My+name+is+Merve+and+my+favorite) (given that we have a very powerful hardware) or [GPT-3](https://openai.com/api/) (given than we have an account). For example, with GPT3 we can create a training data set of topics, named entities and comments. Then we finetune a model based on this data to build a state of the art model for comment generation.
+* There are a couple of ways to improve the performance of the service:
+	* To improve the topic detection, we can stack the result of multiple zero-shot classifier given that we have the  processing power to run the models.
+	* Apart from replacing the model with a better one, NER models can be improved by integrating gazetteer based models with the current model, especially to enhance the quality of the model in the case of PERSON and COMPANY entities.
+	* To generate comments, the best practice would be  to use a language models like [GPT-J-6B](https://huggingface.co/EleutherAI/gpt-j-6B) (given that we have a very powerful hardware) or [GPT-3](https://openai.com/api/) (given than we have an account). For example, with GPT3 we can create a training data set of topics, named entities and comments. Then we finetune a model based on this data to build a state of the art model for comment generation.
 	* To run the current models efficiently and with low latency we need to either host the models on a hardware with decent GPU or use available services like [NLPCloud](https://nlpcloud.io/) (the paid plans) to have a very good performance in the case of response time.
 
 
