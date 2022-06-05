@@ -19,7 +19,8 @@ The service is comprised of the following different parts:
  * The third part is about generating comment about the post given the information extracted. To do this properly we can use a language model but since publicly available model need relatively powerful  hardware to host we switch to and alternative method and that is using a  [text summarization model](https://huggingface.co/philschmid/distilbart-cnn-12-6-samsum) to generate the comments.
  After going through these components, result is store in a MongoDB instance. The whole system is served using Flask framework as a Restful API. The architecture of the system is shown in the following picture: 
  ![Arch](https://lh3.googleusercontent.com/tdClz7dna1i7KT4OlRJLR-ZvXWqthk6b73WHGdMKc7Zp66VqCxHJ9IbPdUOCp4NuhqSsOO5vRtVkdwTn45iVxpmsgjs_RBOJXag9QyJt7ZJW3bxr8k7IgtswmxrZjTLfTmWZtle52VMBdGiKxJFHURwcW_5-NWJaOa92ICyeGVnR7AiccCSxUTNAM5U6UD2_EpRtF0mtRKNbS1IDYNGz5npET5g9OG8AijWnbj6FSWbx9kBUhDpVCL03BEBfnPEUvoeb5OKnIdWhM6Xqa2S-vZhB4u--AafAPKKn2bMZvXD6-cNDxEqavxEXZk0bhGp81gZ_jSKuX1lTm1y8lq8JNd_7E6pV1LGb6Gzaw0ErKbgv0_uHbr1OAbf06gsfWYX-ts0h-sPdjUbGzEdCgdqJ6ZZS5JqiedHgEzYk-TMGK59fMzcJyC7EcUt9R7cOW4TS1gvn0Be9e1tYlD1il7ESmjWiZQqRLb0piqaRNF7As-xFFy7gSa8jhkfCR2vqjay00NYeBjSfscKYwYvUgG_fiHyuHCs817XoS4GoTffDjwlXHgeRkeiQRXuU4P6t3aQuOB44bO7WC_I3xmfQr0y7I740awydozED0FD_at4Rr7QPBUchvqjZS6oJpBKWOgC71Je0L-Jtk3vcArWyA4hobrFfUawBaiA2N588DKE5XxwRchY5L0dCZYWhlr3QE7fVjZFziNz6Nb53VK6ybDChwNY_COMIyd0WTKgk698xaB1qOiR3g7GHDUc7wQKjqg=w502-h601-no?authuser=0)
- **Note**
+
+**Note**
 The current service implementation (as a demo), uses CPU as the source of computation so the latency of the current service is relatively high.
 
 
