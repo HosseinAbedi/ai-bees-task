@@ -19,7 +19,7 @@ def get_comment(text):
 
 def categorize_text(text):
     res =  CLASSIFIER(text, LABELS, multi_label=True)
-    return res['labels'][np.argmax(res['scores'])] #dict(zip(res['labels'], map(lambda x: str(round(x, 3)*100) + '%', res['scores'])))
+    return res['labels'][np.argmax(res['scores'])] 
 
 def get_named_entities(text):
     res = NLP(text)
